@@ -19,6 +19,7 @@ endif()
 enable_testing()
 
 macro(clone_build libname)
+    message(STATUS "Clone_build: benchmarks ${libname}") 
 	configure_file(clone_build/${libname}.in ${libname}-download/CMakeLists.txt)
 	execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${libname}-download")
