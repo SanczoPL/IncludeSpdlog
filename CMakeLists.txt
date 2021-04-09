@@ -19,7 +19,7 @@ endif()
 enable_testing()
 
 macro(clone_build libname)
-    message(STATUS "Clone_build: benchmarks ${libname}") 
+    message(STATUS "Clone_build: ${libname}") 
 	configure_file(clone_build/${libname}.in ${libname}-download/CMakeLists.txt)
 	execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${libname}-download")
@@ -39,7 +39,7 @@ macro(clone_build libname)
 	install(EXPORT ${libname}Config DESTINATION share/${libname}/cmake)
 
 	export(TARGETS ${libname} FILE ${libname}Config.cmake)
-
+    message(STATUS "Clone_build: ${libname} done") 
 endmacro()
 
 clone_build(spdlog)
