@@ -15,34 +15,13 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-
 enable_testing()
 
-macro(clone_build libname)
-    message(STATUS "Clone_build: ${libname}") 
-	configure_file(clone_build/${libname}.in ${libname}-download/CMakeLists.txt)
-	execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${libname}-download")
-	execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${libname}-download")
-	add_subdirectory("${CMAKE_BINARY_DIR}/${libname}-src"
-                 "${CMAKE_BINARY_DIR}/${libname}-build")
+if (WIN32)
+	list(APPEND CMAKE_PREFIX_PATH "E:\\repo\\spdlog\\build\\install")
+endif (WIN32)
 
-    include_directories("${libname}-src/include")
-	#install(EXPORT ${libname} DESTINATION share/${libname}/cmake)
-	install(TARGETS ${libname} EXPORT ${libname}Config
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-	install(TARGETS ${libname} DESTINATION lib)
-	#install(FILES  ${HEADERS} DESTINATION include)
-	install(EXPORT ${libname}Config DESTINATION share/${libname}/cmake)
-
-	export(TARGETS ${libname} FILE ${libname}Config.cmake)
-    message(STATUS "Clone_build: ${libname} done") 
-endmacro()
-
-clone_build(spdlog)
+find_package(spdlog)
 
 set(SRC src/includespdlog.cc)
 
